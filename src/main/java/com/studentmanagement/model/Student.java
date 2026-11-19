@@ -1,5 +1,7 @@
 package com.studentmanagement.model;
 
+import java.sql.Timestamp;
+
 public class Student {
 
     private int id;
@@ -9,15 +11,16 @@ public class Student {
     private String gender;
     private String dateOfBirth;
     private String address;
-    private int departmentId;
+    private Integer departmentId;
     private String departmentName;
+    private Timestamp createdAt;
 
     public Student() {
     }
 
     public Student(String name, String email, String phone,
                    String gender, String dateOfBirth,
-                   String address, int departmentId) {
+                   String address, Integer departmentId) {
         this.name = name;
         this.email = email;
         this.phone = phone;
@@ -50,8 +53,8 @@ public class Student {
     public String getAddress() { return address; }
     public void setAddress(String address) { this.address = address; }
 
-    public int getDepartmentId() { return departmentId; }
-    public void setDepartmentId(int departmentId) {
+    public Integer getDepartmentId() { return departmentId; }
+    public void setDepartmentId(Integer departmentId) {
         this.departmentId = departmentId;
     }
 
@@ -59,4 +62,7 @@ public class Student {
     public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
     }
+
+    public Timestamp getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
 }

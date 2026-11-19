@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,18 +16,58 @@
   <div class="min-w-0 flex-1">
     <%@ include file="WEB-INF/views/includes/topbar.jsp" %>
     <main class="mx-auto max-w-7xl p-5 sm:p-8">
-
-      <div class="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p class="text-sm font-semibold text-indigo-600">DIRECTORY</p><h2 class="mt-2 text-3xl font-extrabold text-slate-900">Students</h2><p class="mt-2 text-slate-500">Manage and review all registered students.</p></div><a href="add-student.jsp" class="rounded-xl bg-indigo-600 px-5 py-3 text-center text-sm font-bold text-white hover:bg-indigo-700">＋ Add student</a></div>
-      <div class="rounded-2xl border border-slate-200 bg-white">
-        <div class="flex flex-col gap-3 border-b border-slate-100 p-5 md:flex-row md:items-center md:justify-between"><div><h3 class="font-extrabold text-slate-900">All students <span class="ml-1 rounded-lg bg-slate-100 px-2 py-1 text-xs text-slate-500">1,248</span></h3><p class="mt-1 text-xs text-slate-400">Static sample records for layout preview</p></div><div class="flex flex-col gap-2 sm:flex-row"><input type="search" placeholder="Search by name or email..." class="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-indigo-400"><select class="rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-600"><option>All departments</option><option>Computer Science</option><option>Business</option><option>English</option></select></div></div>
-        <div class="overflow-x-auto"><table class="w-full min-w-[760px] text-left text-sm"><thead class="bg-slate-50 text-xs uppercase tracking-wider text-slate-400"><tr><th class="px-5 py-4">Student</th><th class="px-5 py-4">Student ID</th><th class="px-5 py-4">Department</th><th class="px-5 py-4">Email</th><th class="px-5 py-4">Status</th><th class="px-5 py-4 text-right">Actions</th></tr></thead><tbody class="divide-y divide-slate-100">
-          <tr><td class="px-5 py-4"><div class="flex items-center gap-3"><span class="grid h-9 w-9 place-items-center rounded-full bg-violet-100 font-bold text-violet-700">AR</span><b>Ayesha Rahman</b></div></td><td class="px-5 py-4 text-slate-500">STU-1024</td><td class="px-5 py-4">Computer Science</td><td class="px-5 py-4 text-slate-500">ayesha@example.com</td><td class="px-5 py-4"><span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">Active</span></td><td class="px-5 py-4 text-right"><a href="student-details.jsp" class="font-bold text-indigo-600">View</a><span class="px-2 text-slate-300">·</span><a href="edit-student.jsp" class="font-bold text-slate-600">Edit</a></td></tr>
-          <tr><td class="px-5 py-4"><div class="flex items-center gap-3"><span class="grid h-9 w-9 place-items-center rounded-full bg-sky-100 font-bold text-sky-700">TH</span><b>Tanvir Hasan</b></div></td><td class="px-5 py-4 text-slate-500">STU-1023</td><td class="px-5 py-4">Business</td><td class="px-5 py-4 text-slate-500">tanvir@example.com</td><td class="px-5 py-4"><span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">Active</span></td><td class="px-5 py-4 text-right"><a href="student-details.jsp" class="font-bold text-indigo-600">View</a><span class="px-2 text-slate-300">·</span><a href="edit-student.jsp" class="font-bold text-slate-600">Edit</a></td></tr>
-          <tr><td class="px-5 py-4"><div class="flex items-center gap-3"><span class="grid h-9 w-9 place-items-center rounded-full bg-amber-100 font-bold text-amber-700">NJ</span><b>Nusrat Jahan</b></div></td><td class="px-5 py-4 text-slate-500">STU-1022</td><td class="px-5 py-4">English</td><td class="px-5 py-4 text-slate-500">nusrat@example.com</td><td class="px-5 py-4"><span class="rounded-full bg-amber-50 px-3 py-1 text-xs font-bold text-amber-700">Pending</span></td><td class="px-5 py-4 text-right"><a href="student-details.jsp" class="font-bold text-indigo-600">View</a><span class="px-2 text-slate-300">·</span><a href="edit-student.jsp" class="font-bold text-slate-600">Edit</a></td></tr>
-        </tbody></table></div>
-        <div class="flex items-center justify-between border-t border-slate-100 px-5 py-4 text-xs text-slate-500"><span>Showing 1–3 of 1,248 students</span><div class="flex gap-2"><button class="rounded-lg border border-slate-200 px-3 py-2" disabled>Previous</button><button class="rounded-lg border border-slate-200 px-3 py-2">Next</button></div></div>
+      <div class="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+        <div><p class="text-sm font-semibold text-indigo-600">DIRECTORY</p><h2 class="mt-2 text-3xl font-extrabold text-slate-900">Students</h2><p class="mt-2 text-slate-500">Manage and review student records.</p></div>
+        <c:if test="${currentUser.roleName eq 'ADMIN'}"><a href="${pageContext.request.contextPath}/students?action=new" class="rounded-xl bg-indigo-600 px-5 py-3 text-center text-sm font-bold text-white hover:bg-indigo-700">＋ Add student</a></c:if>
       </div>
 
+      <c:if test="${not empty successMessage}"><div role="status" class="mb-5 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800"><c:out value="${successMessage}" /></div></c:if>
+      <c:if test="${not empty errorMessage}"><div role="alert" class="mb-5 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800"><c:out value="${errorMessage}" /></div></c:if>
+
+      <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+        <div class="flex flex-col gap-4 border-b border-slate-100 p-5 lg:flex-row lg:items-center lg:justify-between">
+          <div><h3 class="font-extrabold text-slate-900">Student records <span class="ml-1 rounded-lg bg-slate-100 px-2 py-1 text-xs text-slate-600"><c:choose><c:when test="${databaseUnavailable}">—</c:when><c:otherwise><c:out value="${students.size()}" /></c:otherwise></c:choose></span></h3><p class="mt-1 text-xs text-slate-500">Records are loaded from PostgreSQL.</p></div>
+          <form method="get" action="${pageContext.request.contextPath}/students" class="flex flex-col gap-2 sm:flex-row">
+            <label class="sr-only" for="search">Search students</label>
+            <input id="search" name="search" type="search" value="<c:out value='${search}' />" placeholder="Search name, email, or phone" class="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-indigo-400">
+            <label class="sr-only" for="departmentId">Filter by department</label>
+            <select id="departmentId" name="departmentId" class="rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-700">
+              <option value="">All departments</option>
+              <option value="unassigned" ${selectedUnassigned ? 'selected' : ''}>Unassigned</option>
+              <c:forEach var="department" items="${departments}">
+                <option value="${department.id}" ${selectedDepartmentId == department.id ? 'selected' : ''}><c:out value="${department.name}" /></option>
+              </c:forEach>
+            </select>
+            <button type="submit" class="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white hover:bg-slate-700">Search</button>
+            <a href="${pageContext.request.contextPath}/students" class="rounded-xl border border-slate-200 px-4 py-2.5 text-center text-sm font-semibold text-slate-600 hover:bg-slate-50">Clear</a>
+          </form>
+        </div>
+        <c:choose>
+          <c:when test="${empty students and databaseUnavailable}">
+            <div class="px-6 py-14 text-center"><h3 class="font-extrabold text-slate-900">Student list unavailable</h3><p class="mt-2 text-sm text-slate-500">The database could not return records. Check the connection and try again.</p></div>
+          </c:when>
+          <c:when test="${empty students}">
+            <div class="px-6 py-14 text-center"><h3 class="font-extrabold text-slate-900">No students found</h3><p class="mt-2 text-sm text-slate-500">${currentUser.roleName eq 'ADMIN' ? 'Add a student or adjust your search and department filter.' : 'Adjust your search and department filter.'}</p><c:if test="${currentUser.roleName eq 'ADMIN'}"><a class="mt-5 inline-flex rounded-xl bg-indigo-600 px-5 py-3 text-sm font-bold text-white hover:bg-indigo-700" href="${pageContext.request.contextPath}/students?action=new">Add a student</a></c:if></div>
+          </c:when>
+          <c:otherwise>
+            <div class="overflow-x-auto"><table class="w-full min-w-[760px] text-left text-sm">
+              <thead class="bg-slate-50 text-xs uppercase tracking-wider text-slate-500"><tr><th scope="col" class="px-5 py-4">Student</th><th scope="col" class="px-5 py-4">Record ID</th><th scope="col" class="px-5 py-4">Department</th><th scope="col" class="px-5 py-4">Email</th><th scope="col" class="px-5 py-4">Phone</th><th scope="col" class="px-5 py-4 text-right">Actions</th></tr></thead>
+              <tbody class="divide-y divide-slate-100">
+                <c:forEach var="student" items="${students}">
+                  <tr>
+                    <td class="px-5 py-4 font-semibold text-slate-900"><c:out value="${student.name}" /></td>
+                    <td class="px-5 py-4 text-slate-500">#<c:out value="${student.id}" /></td>
+                    <td class="px-5 py-4"><c:out value="${student.departmentName}" default="Unassigned" /></td>
+                    <td class="px-5 py-4 text-slate-600"><c:out value="${student.email}" /></td>
+                    <td class="px-5 py-4 text-slate-500"><c:out value="${student.phone}" default="—" /></td>
+                    <td class="px-5 py-4"><div class="flex items-center justify-end gap-3"><a class="font-bold text-indigo-600 hover:text-indigo-800" href="${pageContext.request.contextPath}/students?action=view&amp;id=${student.id}">View</a><c:if test="${currentUser.roleName eq 'ADMIN'}"><a class="font-bold text-slate-600 hover:text-slate-900" href="${pageContext.request.contextPath}/students?action=edit&amp;id=${student.id}">Edit</a><form method="post" action="${pageContext.request.contextPath}/students" onsubmit="return confirm('Delete this student record?');"><input type="hidden" name="_csrf" value="<c:out value='${csrfToken}' />"><input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="${student.id}"><button type="submit" class="font-bold text-rose-600 hover:text-rose-800">Delete</button></form></c:if></div></td>
+                  </tr>
+                </c:forEach>
+              </tbody>
+            </table></div>
+          </c:otherwise>
+        </c:choose>
+      </section>
     </main>
     <footer class="border-t border-slate-200 px-8 py-5 text-center text-xs text-slate-400">© 2026 CampusDesk · Student Management System</footer>
   </div>
